@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>桌面菜单
+    </title>
+    <link href="Themes/desktop.css" rel="stylesheet" />
+    <script src="../Scripts/jquery-1.8.2.min.js"></script>
+    <script src="../Scripts/Desktop.js"></script>
+    <script src="../Scripts/FunctionJS.js"></script>
+    <script>
+        $(function () {
+            document.onselectstart = function () { return false; }
+        })
+        //右击菜单
+        $("#Content").contextmenu({
+            items: [{
+                text: '刷新桌面',
+                icon: '/content/Themes/images/16/arrow_refresh.png',
+                action: function (target) {
+                    add();
+                }
+            }, {
+                text: '系统设置',
+                icon: '/content/Themes/images/16/advancedsettings2.png',
+                action: function (target) {
+                    edit();
+                }
+            }, {
+                text: '主题设置',
+                icon: '/content/Themes/images/16/paint.png',
+                action: function (target) {
+                    Delete();
+                }
+            }, {
+                text: '使用指南',
+                icon: '/content/Themes/images/16/paint.png',
+                action: function (target) {
+                    Delete();
+                }
+            }, {
+                text: '关于我们',
+                icon: '/content/Themes/images/16/telephone_red.png',
+                action: function (target) {
+                    SetNewPassword();
+                }
+            }]
+        });
+    </script>
+</head>
+<body>
+    <div id="Content">
+        <div class="desktop">
+            <ul class="desk">
+                <li id="1" onclick="AddTabMenu('1', '/User', '职员管理', 'true');"><span class="icon">
+                    <img src="/content/Themes/Images/32/people.png"></span><a class="icon-text"><span>职员管理</span></a></li>
+                <li id="2" onclick="AddTabMenu('2', '/Group', '群组管理', 'true');"><span class="icon">
+                    <img src="/content/Themes/Images/32/4957_customers.png"></span><a class="icon-text"><span>群组管理</span></a></li>
+                <li id="3" onclick="AddTabMenu('3', '/Dept', '组织机构', 'true');"><span class="icon">
+                    <img src="/content/Themes/Images/32/chart_organisation.png"></span><a class="icon-text"><span>组织机构</span></a></li>
+                <li id="4" onclick="AddTabMenu('4', '4', '推送证书', 'true');"><span class="icon">
+                    <img src="/content/Themes/Images/32/certificate.png"></span><a class="icon-text"><span>推送证书</span></a></li>
+                <li id="5" onclick="AddTabMenu('5', '5', '统计数据', 'true');"><span class="icon">
+                    <img src="/content/Themes/Images/32/chart_bar.png"></span><a class="icon-text"><span>统计数据</span></a></li>
+                <li id="6" onclick="AddTabMenu('6', '6', '新闻管理', 'true');"><span class="icon">
+                    <img src="/content/Themes/Images/32/news.png"></span><a class="icon-text"><span>新闻管理</span></a></li>
+                <li id="7" onclick="AddTabMenu('7', '/GroupMember', '群组成员管理', 'true');"><span class="icon">
+                    <img src="/content/Themes/Images/32/people.png"></span><a class="icon-text"><span>群组成员管理</span></a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
