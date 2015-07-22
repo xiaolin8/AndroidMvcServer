@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Configuration;
 namespace AndroidMvcServer.DBUtility
 {
@@ -6,25 +6,24 @@ namespace AndroidMvcServer.DBUtility
     public class PubConstant
     {        
         /// <summary>
-        /// è·å–è¿æ¥å­—ç¬¦ä¸²
+        /// »ñÈ¡Á¬½Ó×Ö·û´®
         /// </summary>
         public static string ConnectionString
         {           
             get 
             {
-                //string _connectionString = GetConnectionString("ConnectionString");       
-                //string ConStringEncrypt = ConfigurationManager.AppSettings["ConStringEncrypt"];
-                //if (ConStringEncrypt == "true")
-                //{
-                //    _connectionString = DESEncrypt.Decrypt(_connectionString);
-                //}
-                string _connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+                string _connectionString = ConfigurationManager.AppSettings["ConnectionString"];       
+                string ConStringEncrypt = ConfigurationManager.AppSettings["ConStringEncrypt"];
+                if (ConStringEncrypt == "true")
+                {
+                    _connectionString = DESEncrypt.Decrypt(_connectionString);
+                }
                 return _connectionString; 
             }
         }
 
         /// <summary>
-        /// å¾—åˆ°web.configé‡Œé…ç½®é¡¹çš„æ•°æ®åº“è¿æ¥å­—ç¬¦ä¸²ã€‚
+        /// µÃµ½web.configÀïÅäÖÃÏîµÄÊı¾İ¿âÁ¬½Ó×Ö·û´®¡£
         /// </summary>
         /// <param name="configName"></param>
         /// <returns></returns>
