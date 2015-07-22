@@ -27,3 +27,17 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 *.vssscc
 $tf*/
+/Lib/AndroidMvcServer.Model.dll.config
+/Lib/AndroidMvcServer.Model.pdb
+/Lib/AndroidMvcServer.Portal.dll
+/Lib/AndroidMvcServer.Tests.dll
+/Lib/AndroidMvcServer.Tests.dll.config
+/Lib/AndroidMvcServer.BLL.dll
+/Lib/AndroidMvcServer.BLL.pdb
+/Lib/AndroidMvcServer.Common.dll
+/Lib/AndroidMvcServer.Common.pdb
+/Lib/AndroidMvcServer.DAL.dll
+/Lib/AndroidMvcServer.DAL.pdb
+/Lib/AndroidMvcServer.DBUtility.dll
+/Lib/AndroidMvcServer.DBUtility.pdb
+/Lib/AndroidMvcServer.Model.dll
