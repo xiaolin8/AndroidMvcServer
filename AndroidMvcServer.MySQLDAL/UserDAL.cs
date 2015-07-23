@@ -380,5 +380,11 @@ namespace AndroidMvcServer.MySQLDAL
         #region  ExtensionMethod
 
         #endregion  ExtensionMethod
+
+
+        public Model.Tb_User GetModelByDepId(string DepId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

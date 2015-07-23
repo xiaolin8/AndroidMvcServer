@@ -28,7 +28,7 @@ namespace AndroidMvcServer.IDAL
         /// <summary>
         /// 得到一个对象实体
         /// </summary>
-        AndroidMvcServer.Model.Tb_User GetModel(string UserId);
+        Model.Tb_User GetModel(string UserId);
         AndroidMvcServer.Model.Tb_User DataRowToModel(DataRow row);
         /// <summary>
         /// 获得数据列表
@@ -42,5 +42,7 @@ namespace AndroidMvcServer.IDAL
         #region  MethodEx
 
         #endregion  MethodEx
+
+        Model.Tb_User GetModelByDepId(string DepId);
     }
 }

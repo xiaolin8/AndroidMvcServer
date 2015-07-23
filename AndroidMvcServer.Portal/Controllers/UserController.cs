@@ -15,6 +15,7 @@ namespace AndroidMvcServer.Controllers
     {
         //
         // GET: /User/
+        UserBLL bll = new UserBLL();
 
         public ActionResult Index()
         {
@@ -25,33 +26,35 @@ namespace AndroidMvcServer.Controllers
         public JsonResult GetUsers()
         {
             //加载组织机构列表
-            UserBLL bll = new UserBLL();
-            DataTable DTable = bll.getUserTable();
-            if (DTable != null)
+            DataSet DSet = bll.GetList("");
+            if (DSet != null)
             {
-                List<UserModel> litestModel = new List<UserModel>();
-                for (int i = 0; i < DTable.Rows.Count; i++)
+                if (DSet.Tables[0] != null)
                 {
-                    DataRowView rowview = DTable.DefaultView[i];
-                    litestModel.Add(new UserModel()
+                    List<UserModel> litestModel = new List<UserModel>();
+                    for (int i = 0; i < DSet.Tables[0].Rows.Count; i++)
                     {
-                        UserName = rowview["UserName"].ToString(),
-                        UserId = rowview["UserId"].ToString(),
-                        EnglishName = rowview["EnglishName"].ToString(),
-                        Signature = rowview["Signature"].ToString(),
-                        Status = Convert.ToInt32(rowview["Status"].ToString()),
-                        Gender = Convert.ToBoolean(rowview["Gender"].ToString()),
-                        CellPhone = rowview["CellPhone"].ToString(),
-                        OfficePhone = rowview["OfficePhone"].ToString(),
-                        Email = rowview["Email"].ToString(),
-                        DeptId = rowview["DeptId"].ToString(),
-                        Position = rowview["Position"].ToString(),
-                        HeadPic = Convert.ToInt32(rowview["HeadPic"].ToString()),
-                        DisplayIndex = Convert.ToInt32(rowview["DisplayIndex"].ToString()),
-                        Comment = rowview["Comment"].ToString()
-                    });
+                        DataRowView rowview = DSet.Tables[0].DefaultView[i];
+                        litestModel.Add(new UserModel()
+                        {
+                            UserName = rowview["UserName"].ToString(),
+                            UserId = rowview["UserId"].ToString(),
+                            EnglishName = rowview["EnglishName"].ToString(),
+                            Signature = rowview["Signature"].ToString(),
+                            Status = Convert.ToInt32(rowview["Status"].ToString()),
+                            Gender = Convert.ToBoolean(rowview["Gender"].ToString()),
+                            CellPhone = rowview["CellPhone"].ToString(),
+                            OfficePhone = rowview["OfficePhone"].ToString(),
+                            Email = rowview["Email"].ToString(),
+                            DeptId = rowview["DeptId"].ToString(),
+                            Position = rowview["Position"].ToString(),
+                            HeadPic = Convert.ToInt32(rowview["HeadPic"].ToString()),
+                            DisplayIndex = Convert.ToInt32(rowview["DisplayIndex"].ToString()),
+                            Comment = rowview["Comment"].ToString()
+                        });
+                    }
+                    return Json(litestModel, JsonRequestBehavior.AllowGet);
                 }
-                return Json(litestModel, JsonRequestBehavior.AllowGet);
             }
             return null;
         }
@@ -60,7 +63,7 @@ namespace AndroidMvcServer.Controllers
         public JsonResult GetUsersByDepId(string DepId)
         {
             UserBLL bll = new UserBLL();
-            DataTable DTable = bll.getUsersByDepId(DepId);
+            DataTable DTable = bll.GetUsersByDepId(DepId);
             if (DTable != null)
             {
                 List<UserModel> litestModel = new List<UserModel>();
@@ -73,7 +76,7 @@ namespace AndroidMvcServer.Controllers
                         EnglishName = rowview["EnglishName"].ToString(),
                         UserId = rowview["UserId"].ToString(),
                         Status = Convert.ToInt32(rowview["Status"].ToString()),
-                        Gender = Convert.ToBoolean(rowview["Gender"].ToString()),
+                        Gender = rowview["Gender"].ToString() == "1" ? true : false,
                         Signature = rowview["Signature"].ToString(),
                         HeadPic = Convert.ToInt32(rowview["HeadPic"].ToString()),
                         CellPhone = rowview["CellPhone"].ToString(),
@@ -91,26 +94,26 @@ namespace AndroidMvcServer.Controllers
             return null;
         }
 
-        public string GetDept(string UserId)
-        {
-            MySqlParameter[] sp = new MySqlParameter[8];
-            sp[0] = new MySqlParameter("@userId", UserId);
-            sp[1] = new MySqlParameter("@dept1", MySqlDbType.VarChar, 50);
-            sp[1].Direction = ParameterDirection.Output;
-            sp[2] = new MySqlParameter("@dept2", MySqlDbType.VarChar, 50);
-            sp[2].Direction = ParameterDirection.Output;
-            sp[3] = new MySqlParameter("@dept3", MySqlDbType.VarChar, 50);
-            sp[3].Direction = ParameterDirection.Output;
-            sp[4] = new MySqlParameter("@dept4", MySqlDbType.VarChar, 50);
-            sp[4].Direction = ParameterDirection.Output;
-            sp[5] = new MySqlParameter("@DepId", MySqlDbType.VarChar, 50);
-            sp[5].Direction = ParameterDirection.Output;
-            sp[6] = new MySqlParameter("@DepName", MySqlDbType.VarChar, 50);
-            sp[6].Direction = ParameterDirection.Output;
-            sp[7] = new MySqlParameter("@ParDepId", MySqlDbType.VarChar, 50);
-            sp[7].Direction = ParameterDirection.Output;
-            return this.sqlHelper.OutPutProcToSp("pro_GetFullDeptsByUserId", sp);
-        }
+        //public string GetDept(string UserId)
+        //{
+        //    MySqlParameter[] sp = new MySqlParameter[8];
+        //    sp[0] = new MySqlParameter("@userId", UserId);
+        //    sp[1] = new MySqlParameter("@dept1", MySqlDbType.VarChar, 50);
+        //    sp[1].Direction = ParameterDirection.Output;
+        //    sp[2] = new MySqlParameter("@dept2", MySqlDbType.VarChar, 50);
+        //    sp[2].Direction = ParameterDirection.Output;
+        //    sp[3] = new MySqlParameter("@dept3", MySqlDbType.VarChar, 50);
+        //    sp[3].Direction = ParameterDirection.Output;
+        //    sp[4] = new MySqlParameter("@dept4", MySqlDbType.VarChar, 50);
+        //    sp[4].Direction = ParameterDirection.Output;
+        //    sp[5] = new MySqlParameter("@DepId", MySqlDbType.VarChar, 50);
+        //    sp[5].Direction = ParameterDirection.Output;
+        //    sp[6] = new MySqlParameter("@DepName", MySqlDbType.VarChar, 50);
+        //    sp[6].Direction = ParameterDirection.Output;
+        //    sp[7] = new MySqlParameter("@ParDepId", MySqlDbType.VarChar, 50);
+        //    sp[7].Direction = ParameterDirection.Output;
+        //    return this.sqlHelper.OutPutProcToSp("pro_GetFullDeptsByUserId", sp);
+        //}
 
         /// <summary>
         /// 获取用户在云服务器上的详细信息
@@ -136,13 +139,12 @@ namespace AndroidMvcServer.Controllers
 
         public string getNickById(string userName)
         {
-            string strSql = "SELECT UserName FROM Tb_User WHERE UserId = '" + userName + "'";
-            return AndroidMvcServer.DAL.MySqlHelper.getFirstRow(strSql);
+            return bll.GetNickById(userName);
         }
 
         public int GetPerPhoto(string UserId)
         {
-            return Convert.ToInt32(AndroidMvcServer.DAL.MySqlHelper.getFirstRow("SELECT HeadPic FROM Tb_User WHERE UserId = '" + UserId + "'"));
+            return bll.GetPerPhoto(UserId);
         }
 
         //

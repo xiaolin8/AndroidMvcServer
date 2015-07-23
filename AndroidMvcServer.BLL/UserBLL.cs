@@ -5,6 +5,7 @@ using AndroidMvcServer.Common;
 using AndroidMvcServer.Model;
 using AndroidMvcServer.DALFactory;
 using AndroidMvcServer.IDAL;
+using System.Text;
 namespace AndroidMvcServer.BLL
 {
     /// <summary>
@@ -59,9 +60,8 @@ namespace AndroidMvcServer.BLL
         /// <summary>
         /// 得到一个对象实体
         /// </summary>
-        public AndroidMvcServer.Model.Tb_User GetModel(string UserId)
+        public Model.Tb_User GetModel(string UserId)
         {
-
             return dal.GetModel(UserId);
         }
 
@@ -165,8 +165,53 @@ namespace AndroidMvcServer.BLL
         /// <returns></returns>
         public DataTable GetUsersByUserIds(List<string> userIdList)
         {
-            throw new NotImplementedException();
+            StringBuilder strSql = new StringBuilder();
+            foreach (string s in userIdList)
+            {
+                strSql.Append(" UserId = '" + s + "' OR ");
+            }
+            string sql = strSql.ToString().Remove(strSql.Length - 4, 3);
+            DataSet DSet = GetList(sql);
+            if (DSet != null)
+            {
+                if (DSet.Tables[0] != null)
+                {
+                    return DSet.Tables[0];
+                }
+                return null;
+            }
+            return null;
+        }
+        public DataTable GetUsersByDepId(string DepId)
+        {
+            DataSet DSet = dal.GetList(" DeptId = '" + DepId + "'");
+            if (DSet != null)
+            {
+                if (DSet.Tables[0] != null)
+                {
+                    return DSet.Tables[0];
+                }
+                return null;
+            }
+            return null;
         }
         #endregion  ExtensionMethod
+
+
+        public int GetPerPhoto(string UserId)
+        {
+            Model.Tb_User user = GetModel(UserId);
+            if (user != null)
+                return (Int32)user.HeadPic;
+            return -1;
+        }
+
+        public string GetNickById(string userName)
+        {
+            Model.Tb_User user = GetModel(userName);
+            if (user != null)
+                return user.UserName;
+            return "";
+        }
     }
 }
