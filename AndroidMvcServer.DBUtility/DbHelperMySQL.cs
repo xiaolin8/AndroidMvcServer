@@ -1,23 +1,19 @@
 using System;
 using System.Collections;
-using System.Collections.Specialized;
 using System.Data;
 using MySql.Data.MySqlClient;
-using System.Configuration;
-using System.Data.Common;
 using System.Collections.Generic;
 namespace AndroidMvcServer.DBUtility
 {
     /// <summary>
     /// 数据访问抽象基础类
-    /// Copyright (C) Maticsoft
     /// </summary>
     public abstract class DbHelperMySQL
     {
         //数据库连接字符串(web.config来配置)，可以动态更改connectionString支持多数据库.		
         public static string connectionString = PubConstant.ConnectionString;
         public DbHelperMySQL()
-        {            
+        {
         }
 
         #region 公用方法
@@ -65,7 +61,7 @@ namespace AndroidMvcServer.DBUtility
             {
                 return true;
             }
-        }    
+        }
         /// <summary>
         /// 是否存在（基于MySqlParameter）
         /// </summary>
@@ -144,7 +140,7 @@ namespace AndroidMvcServer.DBUtility
                 }
             }
         }
-      
+
         /// <summary>
         /// 执行多条SQL语句，实现数据库事务。
         /// </summary>
@@ -359,7 +355,7 @@ namespace AndroidMvcServer.DBUtility
             catch (MySql.Data.MySqlClient.MySqlException e)
             {
                 throw e;
-            }   
+            }
 
         }
         /// <summary>
@@ -484,14 +480,15 @@ namespace AndroidMvcServer.DBUtility
                 {
                     MySqlCommand cmd = new MySqlCommand();
                     try
-                    { int count = 0;
+                    {
+                        int count = 0;
                         //循环
                         foreach (CommandInfo myDE in cmdList)
                         {
                             string cmdText = myDE.CommandText;
                             MySqlParameter[] cmdParms = (MySqlParameter[])myDE.Parameters;
                             PrepareCommand(cmd, conn, trans, cmdText, cmdParms);
-                           
+
                             if (myDE.EffentNextType == EffentNextType.WhenHaveContine || myDE.EffentNextType == EffentNextType.WhenNoHaveContine)
                             {
                                 if (myDE.CommandText.ToLower().IndexOf("count(") == -1)
@@ -753,7 +750,7 @@ namespace AndroidMvcServer.DBUtility
 
         #endregion
 
-        
+
 
     }
 

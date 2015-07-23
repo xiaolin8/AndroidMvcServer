@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using AndroidMvcServer.BLL;
-using AndroidMvcServer.Portal.Models;
+using AndroidMvcServer.Model;
 
 namespace AndroidMvcServer.Portal.Controllers
 {
@@ -134,42 +132,36 @@ namespace AndroidMvcServer.Portal.Controllers
         /// </summary>
         public void GetDepDataByDepId(string id)
         {
-            DTable = bll.getDeptDetailByDepId(id);
-            if (DTable != null)
+            Tb_Dept model = bll.GetDeptById(id);
+            if (model != null)
             {
-                for (int i = 0; i < DTable.Rows.Count; i++)
+                DepId = model.DepId;
+                DepName = model.DepName;
+                ParDepId = model.ParDepId;
+                DisplayIndex = (Int32)model.DisplayIndex;
+                DirectorId = model.DirectorId;
+                if ((DirectorId != null) && (DirectorId != ""))
                 {
-                    DataRowView view = DTable.DefaultView[i];
-                    DepId = view["DepId"].ToString();
-                    DepName = view["DepName"].ToString();
-                    ParDepId = view["ParDepId"].ToString();
-                    DisplayIndex = Convert.ToInt32(view["DisplayIndex"].ToString());
-                    DirectorId = view["DirectorId"].ToString();
-                    if ((DirectorId != null) && (DirectorId != ""))
-                    {
-                        DirectorName = getNickById(DirectorId);
-                    }
-                    DepEmail = view["DepEmail"].ToString();
-                    Status = Convert.ToInt32(view["Status"].ToString());
-                    Comment = view["Comment"].ToString();
-                    string t = view["IsLeaf"].ToString();
-                    IsLeaf = t == "1" ? true : false;
+                    DirectorName = GetNickById(DirectorId);
                 }
+                DepEmail = model.DepEmail;
+                Status = Convert.ToInt32(model.Status);
+                Comment = model.Comment;
+                int t = (Int32)model.IsLeaf;
+                IsLeaf = t == 1 ? true : false;
             }
         }
+        public string GetNickById(string userId)
+        {
+            return bll.GetNickById(userId);
+        }
 
-        /// <summary>根据ParDepId返回部门ID列表
+        /// <summary>
+        /// 根据ParDepId返回部门ID列表
         /// </summary>
         public List<string> GetDepListByParDepId(string ParDepId)
         {
-            return bll.getDeptsByParDepId(ParDepId);//一级节点
+            return bll.GetDeptsByParDepId(ParDepId);//一级节点
         }
-
-        public string getNickById(string userName)
-        {
-            return AndroidMvcServer.DAL.MySqlHelper.getFirstRow("SELECT UserName FROM Tb_User WHERE UserId = '" + userName + "'");
-        }
-
-
     }
 }

@@ -1,70 +1,172 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using AndroidMvcServer.DAL;
-using MySql.Data.MySqlClient;
-
+using System.Collections.Generic;
+using AndroidMvcServer.Common;
+using AndroidMvcServer.Model;
+using AndroidMvcServer.DALFactory;
+using AndroidMvcServer.IDAL;
 namespace AndroidMvcServer.BLL
 {
-    public class UserBLL
+    /// <summary>
+    /// UserBLL
+    /// </summary>
+    public partial class UserBLL
     {
-        AndroidMvcServer.DAL.MySqlHelper.SqlHelper sqlHelper = new AndroidMvcServer.DAL.MySqlHelper.SqlHelper();
-
-        public DataTable getUserTable()
+        private readonly IUserDAL dal = DataAccess.CreateUserDAL();
+        public UserBLL()
+        { }
+        #region  BasicMethod
+        /// <summary>
+        /// 是否存在该记录
+        /// </summary>
+        public bool Exists(string UserId)
         {
-            string strSqlStr = "SELECT * FROM Tb_User";
-            DataSet DSet = sqlHelper.GetDataSet(strSqlStr);
-            if (DSet != null)
-            {
-                return DSet.Tables[0];
-            }
-            return null;
+            return dal.Exists(UserId);
         }
 
-        public DataTable getUsersByDepId(string DepId)
+        /// <summary>
+        /// 增加一条数据
+        /// </summary>
+        public bool Add(AndroidMvcServer.Model.Tb_User model)
         {
-            MySqlParameter[] sp = new MySqlParameter[] { new MySqlParameter("@DepId", DepId), new MySqlParameter("@dept", MySqlDbType.VarChar, 500) };
-            sp[1].Direction = ParameterDirection.Output;
-            string str = this.sqlHelper.OutPutProc("pro_GetAllChildrenDeptIdByDeptId", sp);
-            string strSqlStr;
-            if (!string.IsNullOrEmpty(str))
+            return dal.Add(model);
+        }
+
+        /// <summary>
+        /// 更新一条数据
+        /// </summary>
+        public bool Update(AndroidMvcServer.Model.Tb_User model)
+        {
+            return dal.Update(model);
+        }
+
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        public bool Delete(string UserId)
+        {
+
+            return dal.Delete(UserId);
+        }
+        ///// <summary>
+        ///// 删除一条数据
+        ///// </summary>
+        //public bool DeleteList(string UserIdlist)
+        //{
+        //    return dal.DeleteList(AndroidMvcServer.Common.PageValidate.SafeLongFilter(UserIdlist, 0));
+        //}
+
+        /// <summary>
+        /// 得到一个对象实体
+        /// </summary>
+        public AndroidMvcServer.Model.Tb_User GetModel(string UserId)
+        {
+
+            return dal.GetModel(UserId);
+        }
+
+        /// <summary>
+        /// 得到一个对象实体，从缓存中
+        /// </summary>
+        public AndroidMvcServer.Model.Tb_User GetModelByCache(string UserId)
+        {
+
+            string CacheKey = "UserBLLModel-" + UserId;
+            object objModel = AndroidMvcServer.Common.DataCache.GetCache(CacheKey);
+            if (objModel == null)
             {
-                string[] strArray = str.Split(new char[] { '\\' });
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < strArray.Length; i++)
+                try
                 {
-                    builder.Append(" OR ParDepId = '" + strArray[i] + "' ");
+                    objModel = dal.GetModel(UserId);
+                    if (objModel != null)
+                    {
+                        int ModelCache = AndroidMvcServer.Common.ConfigHelper.GetConfigInt("ModelCache");
+                        AndroidMvcServer.Common.DataCache.SetCache(CacheKey, objModel, DateTime.Now.AddMinutes(ModelCache), TimeSpan.Zero);
+                    }
                 }
-                strSqlStr = "SELECT UserId,UserName, EnglishName, Tb_User. Status, Tb_User . DeptId , Gender , Signature , HeadPic , CellPhone , OfficePhone , Email , Position , Tb_User . DisplayIndex , Tb_User . Comment  FROM  Tb_User , Tb_Dept  WHERE  Tb_Dept . DepId  =  Tb_User . DeptId  AND ( ParDepId ='" + DepId + "'" + builder.ToString() + ")";
+                catch { }
             }
-            else
-            {
-                strSqlStr = "SELECT  UserId , UserName , EnglishName , Tb_User . Status , Tb_User . DeptId , Gender , Signature , HeadPic , CellPhone , OfficePhone , Email , Position , Tb_User . DisplayIndex , Tb_User . Comment  FROM  Tb_User , Tb_Dept  WHERE  Tb_Dept . DepId  =  Tb_User . DeptId  AND ( DeptId ='" + DepId + "' OR ParDepId = '" + DepId + "')";
-            }
-            DataSet dataSet = this.sqlHelper.GetDataSet(strSqlStr);
-            if (dataSet != null)
-            {
-                return dataSet.Tables[0];
-            }
-            return null;
+            return (AndroidMvcServer.Model.Tb_User)objModel;
         }
 
-        public DataTable getUsersByUserIds(List<string> userIdList)
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetList(string strWhere)
         {
-            StringBuilder sbSql = new StringBuilder("SELECT * FROM Tb_User WHERE UserId = '" + userIdList[0] + "'");
-            for (int i = 0; i < userIdList.Count; i++)
-            {
-                sbSql.Append(" OR UserId = '" + userIdList[i] + "'");
-            }
-            DataSet DSet = sqlHelper.GetDataSet(sbSql.ToString());
-            if (DSet != null)
-            {
-                return DSet.Tables[0];
-            }
-            return null;
+            return dal.GetList(strWhere);
         }
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public List<AndroidMvcServer.Model.Tb_User> GetModelList(string strWhere)
+        {
+            DataSet ds = dal.GetList(strWhere);
+            return DataTableToList(ds.Tables[0]);
+        }
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public List<AndroidMvcServer.Model.Tb_User> DataTableToList(DataTable dt)
+        {
+            List<AndroidMvcServer.Model.Tb_User> modelList = new List<AndroidMvcServer.Model.Tb_User>();
+            int rowsCount = dt.Rows.Count;
+            if (rowsCount > 0)
+            {
+                AndroidMvcServer.Model.Tb_User model;
+                for (int n = 0; n < rowsCount; n++)
+                {
+                    model = dal.DataRowToModel(dt.Rows[n]);
+                    if (model != null)
+                    {
+                        modelList.Add(model);
+                    }
+                }
+            }
+            return modelList;
+        }
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetAllList()
+        {
+            return GetList("");
+        }
+
+        ///// <summary>
+        ///// 分页获取数据列表
+        ///// </summary>
+        //public int GetRecordCount(string strWhere)
+        //{
+        //    return dal.GetRecordCount(strWhere);
+        //}
+        ///// <summary>
+        ///// 分页获取数据列表
+        ///// </summary>
+        //public DataSet GetListByPage(string strWhere, string orderby, int startIndex, int endIndex)
+        //{
+        //    return dal.GetListByPage(strWhere, orderby, startIndex, endIndex);
+        //}
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        //public DataSet GetList(int PageSize,int PageIndex,string strWhere)
+        //{
+        //return dal.GetList(PageSize,PageIndex,strWhere);
+        //}
+
+        #endregion  BasicMethod
+        #region  ExtensionMethod
+        /// <summary>
+        /// 根据用户ID列表返回用户信息表
+        /// </summary>
+        /// <param name="userIdList"></param>
+        /// <returns></returns>
+        public DataTable GetUsersByUserIds(List<string> userIdList)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion  ExtensionMethod
     }
 }

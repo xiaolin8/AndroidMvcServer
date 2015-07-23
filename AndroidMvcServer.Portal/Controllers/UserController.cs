@@ -6,7 +6,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AndroidMvcServer.BLL;
-using AndroidMvcServer.DAL;
 using AndroidMvcServer.Portal.Models;
 using MySql.Data.MySqlClient;
 
@@ -14,7 +13,6 @@ namespace AndroidMvcServer.Controllers
 {
     public class UserController : Controller
     {
-        private AndroidMvcServer.DAL.MySqlHelper.SqlHelper sqlHelper = new AndroidMvcServer.DAL.MySqlHelper.SqlHelper();
         //
         // GET: /User/
 

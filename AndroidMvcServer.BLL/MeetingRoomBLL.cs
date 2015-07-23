@@ -1,14 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-
+using System.Collections.Generic;
+using AndroidMvcServer.Common;
+using AndroidMvcServer.Model;
+using AndroidMvcServer.DALFactory;
+using AndroidMvcServer.IDAL;
 namespace AndroidMvcServer.BLL
 {
-    public class MeetingRoomBLL
+    /// <summary>
+    /// MeetingRoomBLL
+    /// </summary>
+    public partial class MeetingRoomBLL
     {
-        private readonly AndroidMvcServer.DAL.MeetingRoomDAL dal = new AndroidMvcServer.DAL.MeetingRoomDAL();
+        private readonly IMeetingRoomDAL dal = DataAccess.CreateMeetingRoomDAL();
+        public MeetingRoomBLL()
+        { }
         #region  BasicMethod
 
         /// <summary>
@@ -51,6 +57,14 @@ namespace AndroidMvcServer.BLL
 
             return dal.Delete(RoomId);
         }
+        ///// <summary>
+        ///// 删除一条数据
+        ///// </summary>
+        //public bool DeleteList(string RoomIdlist)
+        //{
+        //    return dal.DeleteList(AndroidMvcServer.Common.PageValidate.SafeLongFilter(RoomIdlist, 0));
+        //}
+
         /// <summary>
         /// 得到一个对象实体
         /// </summary>
@@ -61,41 +75,65 @@ namespace AndroidMvcServer.BLL
         }
 
         /// <summary>
+        /// 得到一个对象实体，从缓存中
+        /// </summary>
+        public AndroidMvcServer.Model.Tb_MeetingRoom GetModelByCache(int RoomId)
+        {
+
+            string CacheKey = "MeetingRoomBLLModel-" + RoomId;
+            object objModel = AndroidMvcServer.Common.DataCache.GetCache(CacheKey);
+            if (objModel == null)
+            {
+                try
+                {
+                    objModel = dal.GetModel(RoomId);
+                    if (objModel != null)
+                    {
+                        int ModelCache = AndroidMvcServer.Common.ConfigHelper.GetConfigInt("ModelCache");
+                        AndroidMvcServer.Common.DataCache.SetCache(CacheKey, objModel, DateTime.Now.AddMinutes(ModelCache), TimeSpan.Zero);
+                    }
+                }
+                catch { }
+            }
+            return (AndroidMvcServer.Model.Tb_MeetingRoom)objModel;
+        }
+
+        /// <summary>
         /// 获得数据列表
         /// </summary>
         public DataSet GetList(string strWhere)
         {
             return dal.GetList(strWhere);
         }
-        /// <summary>
-        /// 获得数据列表
-        /// </summary>
-        public List<AndroidMvcServer.Model.Tb_MeetingRoom> GetModelList(string strWhere)
-        {
-            DataSet ds = dal.GetList(strWhere);
-            return DataTableToList(ds.Tables[0]);
-        }
-        /// <summary>
-        /// 获得数据列表
-        /// </summary>
-        public List<AndroidMvcServer.Model.Tb_MeetingRoom> DataTableToList(DataTable dt)
-        {
-            List<AndroidMvcServer.Model.Tb_MeetingRoom> modelList = new List<AndroidMvcServer.Model.Tb_MeetingRoom>();
-            int rowsCount = dt.Rows.Count;
-            if (rowsCount > 0)
-            {
-                AndroidMvcServer.Model.Tb_MeetingRoom model;
-                for (int n = 0; n < rowsCount; n++)
-                {
-                    model = dal.DataRowToModel(dt.Rows[n]);
-                    if (model != null)
-                    {
-                        modelList.Add(model);
-                    }
-                }
-            }
-            return modelList;
-        }
+        ///// <summary>
+        ///// 获得数据列表
+        ///// </summary>
+        //public List<AndroidMvcServer.Model.Tb_MeetingRoom> GetModelList(string strWhere)
+        //{
+        //    DataSet ds = dal.GetList(strWhere);
+        //    return DataTableToList(ds.Tables[0]);
+        //}
+        ///// <summary>
+        ///// 获得数据列表
+        ///// </summary>
+        //public List<AndroidMvcServer.Model.Tb_MeetingRoom> DataTableToList(DataTable dt)
+        //{
+        //    List<AndroidMvcServer.Model.Tb_MeetingRoom> modelList = new List<AndroidMvcServer.Model.Tb_MeetingRoom>();
+        //    int rowsCount = dt.Rows.Count;
+        //    if (rowsCount > 0)
+        //    {
+        //        AndroidMvcServer.Model.Tb_MeetingRoom model;
+        //        for (int n = 0; n < rowsCount; n++)
+        //        {
+        //            model = dal.DataRowToModel(dt.Rows[n]);
+        //            if (model != null)
+        //            {
+        //                modelList.Add(model);
+        //            }
+        //        }
+        //    }
+        //    return modelList;
+        //}
 
         /// <summary>
         /// 获得数据列表
@@ -105,14 +143,31 @@ namespace AndroidMvcServer.BLL
             return GetList("");
         }
 
+        ///// <summary>
+        ///// 分页获取数据列表
+        ///// </summary>
+        //public int GetRecordCount(string strWhere)
+        //{
+        //    return dal.GetRecordCount(strWhere);
+        //}
+        ///// <summary>
+        ///// 分页获取数据列表
+        ///// </summary>
+        //public DataSet GetListByPage(string strWhere, string orderby, int startIndex, int endIndex)
+        //{
+        //    return dal.GetListByPage(strWhere, orderby, startIndex, endIndex);
+        //}
         /// <summary>
         /// 分页获取数据列表
         /// </summary>
-        public int GetRecordCount(string strWhere)
-        {
-            return dal.GetRecordCount(strWhere);
-        }
+        //public DataSet GetList(int PageSize,int PageIndex,string strWhere)
+        //{
+        //return dal.GetList(PageSize,PageIndex,strWhere);
+        //}
 
         #endregion  BasicMethod
+        #region  ExtensionMethod
+
+        #endregion  ExtensionMethod
     }
 }

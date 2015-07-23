@@ -7,15 +7,12 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using AndroidMvcServer.BLL;
-using AndroidMvcServer.DAL;
 using AndroidMvcServer.Portal.Models;
 
 namespace AndroidMvcServer.Portal.Controllers
 {
     public class GroupController : Controller
     {
-        private MySqlHelper.SqlHelper sqlHelper = new MySqlHelper.SqlHelper();
-
         //
         // GET: /Group/
 
@@ -191,7 +188,7 @@ namespace AndroidMvcServer.Portal.Controllers
             {
                 //根据ID查询用户信息
                 UserBLL bll = new UserBLL();
-                DataTable DTable = bll.getUsersByUserIds(userIdList);
+                DataTable DTable = bll.GetUsersByUserIds(userIdList);
                 UserModel model = new UserModel();
                 if (DTable != null)
                 {

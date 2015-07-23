@@ -13,13 +13,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AndroidMvcServer.Portal</RootNamespace>
     <AssemblyName>AndroidMvcServer.Portal</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,6 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,6 +39,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="fastJSON, Version=2.1.0.0, Culture=neutral, PublicKeyToken=6b75a806b86095cd, processorArchitecture=MSIL">
@@ -50,17 +53,15 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -126,6 +127,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.2.0.20710.0\lib\net40\WebMatrix.Data.dll</HintPath>
@@ -195,21 +197,19 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DeptController.cs" />
-    <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\GroupMemberController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KaoQinController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MeetingRoomController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Models\GroupDetailModel1.cs" />
     <Compile Include="Models\KaoQinModel.cs" />
     <Compile Include="Models\MyGroupModel.cs" />
     <Compile Include="Models\SimpleGroupsModel1.cs" />
-    <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Handler\HXService.cs" />
     <Compile Include="Models\DeptModel.cs" />
     <Compile Include="Models\GroupMemberIdModel.cs" />
@@ -3474,7 +3474,6 @@
     <Content Include="Content\Themes\Images\warning.png" />
     <Content Include="Content\Themes\login.css" />
     <Content Include="favicon.ico" />
-    <Content Include="Global.asax" />
     <Content Include="Content\Extjs4_2\resources\ext-theme-access\Readme.md" />
     <Content Include="Content\Extjs4_2\resources\ext-theme-classic-sandbox\Readme.md" />
     <Content Include="Content\Extjs4_2\resources\ext-theme-classic\Readme.md" />
@@ -3484,6 +3483,7 @@
     <None Include="Properties\PublishProfiles\AndroidServer.pubxml" />
     <None Include="Properties\PublishProfiles\iwork.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Global.asax" />
     <Content Include="Scripts\artDialog\artDialog.source.js" />
     <Content Include="Scripts\artDialog\iframeTools.source.js" />
     <Content Include="Scripts\artDialog\skins\blue.css" />
@@ -3548,13 +3548,13 @@
       <Project>{6afe3193-0b0d-4fbe-a15f-2a621cad6f50}</Project>
       <Name>AndroidMvcServer.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AndroidMvcServer.DAL\AndroidMvcServer.DAL.csproj">
-      <Project>{4ce5d237-b259-4d52-a5e0-430c384f2e18}</Project>
-      <Name>AndroidMvcServer.DAL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AndroidMvcServer.Model\AndroidMvcServer.Model.csproj">
       <Project>{38044c21-1fd9-4c3c-84b2-cf6788a28432}</Project>
       <Name>AndroidMvcServer.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AndroidMvcServer.MySQLDAL\AndroidMvcServer.MySQLDAL.csproj">
+      <Project>{c3ad3d51-834a-4e21-852a-9128188ab073}</Project>
+      <Name>AndroidMvcServer.MySQLDAL</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -3571,7 +3571,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>6323</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

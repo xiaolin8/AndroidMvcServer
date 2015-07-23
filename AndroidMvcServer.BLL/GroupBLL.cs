@@ -1,53 +1,164 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using AndroidMvcServer.DAL;
-
+using System.Collections.Generic;
+using AndroidMvcServer.Common;
+using AndroidMvcServer.Model;
+using AndroidMvcServer.DALFactory;
+using AndroidMvcServer.IDAL;
 namespace AndroidMvcServer.BLL
 {
-    public class GroupBLL
+    /// <summary>
+    /// GroupBLL
+    /// </summary>
+    public partial class GroupBLL
     {
-        MySqlHelper.SqlHelper sqlHelper = new MySqlHelper.SqlHelper();
-
-        public DataTable getGroupsByDepId(string DepId)
+        private readonly IGroupDAL dal = DataAccess.CreateGroupDAL();
+        public GroupBLL()
+        { }
+        #region  BasicMethod
+        /// <summary>
+        /// 是否存在该记录
+        /// </summary>
+        public bool Exists(string groupId)
         {
-            string strSqlStr;
-            List<string> groupList = new List<string>();
-            if (!string.IsNullOrEmpty(DepId))
+            return dal.Exists(groupId);
+        }
+
+        /// <summary>
+        /// 增加一条数据
+        /// </summary>
+        public bool Add(AndroidMvcServer.Model.Tb_Group model)
+        {
+            return dal.Add(model);
+        }
+
+        /// <summary>
+        /// 更新一条数据
+        /// </summary>
+        public bool Update(AndroidMvcServer.Model.Tb_Group model)
+        {
+            return dal.Update(model);
+        }
+
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        public bool Delete(string groupId)
+        {
+
+            return dal.Delete(groupId);
+        }
+        ///// <summary>
+        ///// 删除一条数据
+        ///// </summary>
+        //public bool DeleteList(string groupIdlist)
+        //{
+        //    return dal.DeleteList(AndroidMvcServer.Common.PageValidate.SafeLongFilter(groupIdlist, 0));
+        //}
+
+        /// <summary>
+        /// 得到一个对象实体
+        /// </summary>
+        public AndroidMvcServer.Model.Tb_Group GetModel(string groupId)
+        {
+
+            return dal.GetModel(groupId);
+        }
+
+        ///// <summary>
+        ///// 得到一个对象实体，从缓存中
+        ///// </summary>
+        //public AndroidMvcServer.Model.Tb_Group GetModelByCache(string groupId)
+        //{
+
+        //    string CacheKey = "GroupBLLModel-" + groupId;
+        //    object objModel = Maticsoft.Common.DataCache.GetCache(CacheKey);
+        //    if (objModel == null)
+        //    {
+        //        try
+        //        {
+        //            objModel = dal.GetModel(groupId);
+        //            if (objModel != null)
+        //            {
+        //                int ModelCache = Maticsoft.Common.ConfigHelper.GetConfigInt("ModelCache");
+        //                Maticsoft.Common.DataCache.SetCache(CacheKey, objModel, DateTime.Now.AddMinutes(ModelCache), TimeSpan.Zero);
+        //            }
+        //        }
+        //        catch { }
+        //    }
+        //    return (AndroidMvcServer.Model.Tb_Group)objModel;
+        //}
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetList(string strWhere)
+        {
+            return dal.GetList(strWhere);
+        }
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public List<AndroidMvcServer.Model.Tb_Group> GetModelList(string strWhere)
+        {
+            DataSet ds = dal.GetList(strWhere);
+            return DataTableToList(ds.Tables[0]);
+        }
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public List<AndroidMvcServer.Model.Tb_Group> DataTableToList(DataTable dt)
+        {
+            List<AndroidMvcServer.Model.Tb_Group> modelList = new List<AndroidMvcServer.Model.Tb_Group>();
+            int rowsCount = dt.Rows.Count;
+            if (rowsCount > 0)
             {
-                strSqlStr = "SELECT * FROM Tb_Group";
-                DataSet dataSet = this.sqlHelper.GetDataSet(strSqlStr);
-                if (dataSet != null)
+                AndroidMvcServer.Model.Tb_Group model;
+                for (int n = 0; n < rowsCount; n++)
                 {
-                    if (dataSet.Tables[0] != null)
+                    model = dal.DataRowToModel(dt.Rows[n]);
+                    if (model != null)
                     {
-                        for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
-                        {
-                            DataRowView rowview = dataSet.Tables[0].DefaultView[i];
-                            string groupId = rowview["groupId"].ToString();
-                            string groupName = rowview["groupName"].ToString();
-                            string groupOwner = rowview["groupOwner"].ToString();
-                            string groupDesc = rowview["groupDesc"].ToString();
-                            string isPublic = rowview["isPublic"].ToString();
-                            string allowInvite = rowview["allowInvite"].ToString();
-                            string memberNum = rowview["memberNum"].ToString();
-                            string maxUsers = rowview["maxUsers"].ToString();
-                            groupList.Add(DepId);
-                        }
+                        modelList.Add(model);
                     }
                 }
-                if (groupList.Count > 0)
-                {
-                }
-                StringBuilder builder = new StringBuilder();
-                //获取群主的部门所在地
-                string subCompany;
-                return null;
             }
-            return null;
+            return modelList;
         }
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetAllList()
+        {
+            return GetList("");
+        }
+
+        ///// <summary>
+        ///// 分页获取数据列表
+        ///// </summary>
+        //public int GetRecordCount(string strWhere)
+        //{
+        //    return dal.GetRecordCount(strWhere);
+        //}
+        ///// <summary>
+        ///// 分页获取数据列表
+        ///// </summary>
+        //public DataSet GetListByPage(string strWhere, string orderby, int startIndex, int endIndex)
+        //{
+        //    return dal.GetListByPage(strWhere, orderby, startIndex, endIndex);
+        //}
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        //public DataSet GetList(int PageSize,int PageIndex,string strWhere)
+        //{
+        //return dal.GetList(PageSize,PageIndex,strWhere);
+        //}
+
+        #endregion  BasicMethod
+        #region  ExtensionMethod
+
+        #endregion  ExtensionMethod
     }
 }
