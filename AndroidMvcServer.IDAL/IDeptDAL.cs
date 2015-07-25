@@ -37,5 +37,9 @@ namespace AndroidMvcServer.IDAL
         #region  MethodEx
         string GetNickById(string userId);
         #endregion  MethodEx
+
+        string GetAllDeptIdByUserId(string userId);
+
+        string GetFullDeptName(string UserId);
     }
 }

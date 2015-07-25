@@ -183,7 +183,18 @@ namespace AndroidMvcServer.BLL
         {
             return dal.GetNickById(userId);
         }
+
+
+        public string GetAllDeptIdByUserId(string userId)
+        {
+            return dal.GetAllDeptIdByUserId(userId);
+        }
         #endregion  ExtensionMethod
 
+
+        public string GetFullDeptName(string UserId)
+        {
+            return dal.GetFullDeptName(UserId);
+        }
     }
 }

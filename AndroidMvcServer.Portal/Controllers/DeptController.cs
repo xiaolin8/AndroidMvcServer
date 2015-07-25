@@ -163,5 +163,15 @@ namespace AndroidMvcServer.Portal.Controllers
         {
             return bll.GetDeptsByParDepId(ParDepId);//一级节点
         }
+
+        /// <summary>
+        /// 给移动端的查看用户所在部门
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public string GetDept(string UserId)
+        {
+            return bll.GetFullDeptName(UserId);
+        }
     }
 }

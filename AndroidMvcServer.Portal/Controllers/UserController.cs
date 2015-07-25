@@ -42,7 +42,7 @@ namespace AndroidMvcServer.Controllers
                             EnglishName = rowview["EnglishName"].ToString(),
                             Signature = rowview["Signature"].ToString(),
                             Status = Convert.ToInt32(rowview["Status"].ToString()),
-                            Gender = Convert.ToBoolean(rowview["Gender"].ToString()),
+                            Gender = rowview["Gender"].ToString() == String.Empty ? false : true,
                             CellPhone = rowview["CellPhone"].ToString(),
                             OfficePhone = rowview["OfficePhone"].ToString(),
                             Email = rowview["Email"].ToString(),
@@ -62,7 +62,6 @@ namespace AndroidMvcServer.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public JsonResult GetUsersByDepId(string DepId)
         {
-            UserBLL bll = new UserBLL();
             DataTable DTable = bll.GetUsersByDepId(DepId);
             if (DTable != null)
             {
@@ -93,27 +92,6 @@ namespace AndroidMvcServer.Controllers
             }
             return null;
         }
-
-        //public string GetDept(string UserId)
-        //{
-        //    MySqlParameter[] sp = new MySqlParameter[8];
-        //    sp[0] = new MySqlParameter("@userId", UserId);
-        //    sp[1] = new MySqlParameter("@dept1", MySqlDbType.VarChar, 50);
-        //    sp[1].Direction = ParameterDirection.Output;
-        //    sp[2] = new MySqlParameter("@dept2", MySqlDbType.VarChar, 50);
-        //    sp[2].Direction = ParameterDirection.Output;
-        //    sp[3] = new MySqlParameter("@dept3", MySqlDbType.VarChar, 50);
-        //    sp[3].Direction = ParameterDirection.Output;
-        //    sp[4] = new MySqlParameter("@dept4", MySqlDbType.VarChar, 50);
-        //    sp[4].Direction = ParameterDirection.Output;
-        //    sp[5] = new MySqlParameter("@DepId", MySqlDbType.VarChar, 50);
-        //    sp[5].Direction = ParameterDirection.Output;
-        //    sp[6] = new MySqlParameter("@DepName", MySqlDbType.VarChar, 50);
-        //    sp[6].Direction = ParameterDirection.Output;
-        //    sp[7] = new MySqlParameter("@ParDepId", MySqlDbType.VarChar, 50);
-        //    sp[7].Direction = ParameterDirection.Output;
-        //    return this.sqlHelper.OutPutProcToSp("pro_GetFullDeptsByUserId", sp);
-        //}
 
         /// <summary>
         /// 获取用户在云服务器上的详细信息
@@ -172,7 +150,6 @@ namespace AndroidMvcServer.Controllers
             try
             {
                 // TODO: Add update logic here
-
                 return RedirectToAction("Index");
             }
             catch
@@ -198,7 +175,6 @@ namespace AndroidMvcServer.Controllers
             try
             {
                 // TODO: Add delete logic here
-
                 return RedirectToAction("Index");
             }
             catch

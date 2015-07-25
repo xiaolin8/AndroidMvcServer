@@ -357,5 +357,33 @@ namespace AndroidMvcServer.MySQLDAL
                 return null;
             }
         }
+
+
+        /// <summary>
+        /// 获取某人所在部门全称
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public string GetFullDeptName(string UserId)
+        {
+            string strFullName = "";
+            MySqlDataReader reader = DbHelperMySQL.ExecuteReader("SELECT tb_user.DeptId,ParDepId FROM tb_user,tb_dept WHERE UserId = '" + UserId + "' AND tb_user.DeptId=tb_dept.DepId");//直接部门
+            while (reader.Read())
+            {
+                string DeptId = reader["DeptId"].ToString();
+                strFullName += DeptId;
+                string ParDepId = reader["ParDepId"].ToString();
+                if (ParDepId != "JURASSIC")
+                {
+                }
+            }
+            return "";
+        }
+
+
+        public string GetAllDeptIdByUserId(string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
