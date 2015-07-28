@@ -3,7 +3,9 @@ using System.Data;
 using System.Text;
 using MySql.Data.MySqlClient;
 using AndroidMvcServer.IDAL;
-using AndroidMvcServer.DBUtility;//Please add references
+using AndroidMvcServer.DBUtility;
+using System.Collections.Generic;
+using AndroidMvcServer.Model;//Please add references
 namespace AndroidMvcServer.MySQLDAL
 {
     /// <summary>
@@ -382,8 +384,35 @@ namespace AndroidMvcServer.MySQLDAL
         #endregion  ExtensionMethod
 
 
-        public Model.Tb_User GetModelByDepId(string DepId)
+        public Tb_User GetModelByDepId(string DepId)
         {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 根据部门ID获取部门所有人
+        /// </summary>
+        /// <param name="DepId"></param>
+        /// <returns></returns>
+        public List<Tb_User> GetUsersByDepId(string depId)
+        {
+            string strSql = "SELECT tb_user.*,tb_dept.ParDepId FROM tb_user,tb_dept WHERE tb_user.DeptId=tb_dept.DepId&&tb_user.DeptId='" + depId + "'";
+            MySqlDataReader reader = DbHelperMySQL.ExecuteReader(strSql);
+            while (reader.Read())
+            {
+                string DepId = reader["DepId"].ToString();
+                string ParDepId = reader["ParDepId"].ToString();
+                while (ParDepId != "JURASSIC")
+                {
+                    string sql1 = "SELECT tb_user.*,tb_dept.ParDepId FROM tb_user,tb_dept WHERE tb_user.DeptId=tb_dept.DepId&&tb_user.DeptId='" + ParDepId + "'";
+                    MySqlDataReader sdr1 = DbHelperMySQL.ExecuteReader(sql1);
+                    while (sdr1.Read())
+                    {
+                        string DepId1 = reader["DepId"].ToString();
+                        ParDepId = reader["ParDepId"].ToString();
+                    }
+                }
+            }
             throw new NotImplementedException();
         }
     }

@@ -182,19 +182,13 @@ namespace AndroidMvcServer.BLL
             }
             return null;
         }
-        public DataTable GetUsersByDepId(string DepId)
+
+        //根据DepId获取所有用户数据
+        public List<Tb_User> GetUsersByDepId(string DepId)
         {
-            DataSet DSet = dal.GetList(" DeptId = '" + DepId + "'");
-            if (DSet != null)
-            {
-                if (DSet.Tables[0] != null)
-                {
-                    return DSet.Tables[0];
-                }
-                return null;
-            }
-            return null;
+            return dal.GetUsersByDepId(DepId);
         }
+
         #endregion  ExtensionMethod
 
 

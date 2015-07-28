@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using AndroidMvcServer.Model;
 namespace AndroidMvcServer.IDAL
 {
     /// <summary>
@@ -44,5 +46,7 @@ namespace AndroidMvcServer.IDAL
         #endregion  MethodEx
 
         Model.Tb_User GetModelByDepId(string DepId);
+
+        List<Tb_User> GetUsersByDepId(string DepId);
     }
 }
