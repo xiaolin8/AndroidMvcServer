@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Web.Mvc;
 using AndroidMvcServer.BLL;
-using AndroidMvcServer.Model;
 using AndroidMvcServer.Portal.Models;
 
 namespace AndroidMvcServer.Controllers

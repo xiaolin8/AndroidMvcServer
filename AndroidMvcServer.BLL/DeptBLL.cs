@@ -1,8 +1,9 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Collections.Generic;
 using AndroidMvcServer.DALFactory;
 using AndroidMvcServer.IDAL;
+using AndroidMvcServer.Model;
+
 namespace AndroidMvcServer.BLL
 {
     /// <summary>
@@ -21,22 +22,6 @@ namespace AndroidMvcServer.BLL
         //{
         //    return dal.Exists(DepId);
         //}
-
-        /// <summary>
-        /// 增加一条数据
-        /// </summary>
-        public bool Add(AndroidMvcServer.Model.Tb_Dept model)
-        {
-            return dal.Add(model);
-        }
-
-        /// <summary>
-        /// 更新一条数据
-        /// </summary>
-        public bool Update(AndroidMvcServer.Model.Tb_Dept model)
-        {
-            return dal.Update(model);
-        }
 
         ///// <summary>
         ///// 删除一条数据
@@ -57,7 +42,7 @@ namespace AndroidMvcServer.BLL
         /// <summary>
         /// 得到一个对象实体
         /// </summary>
-        public AndroidMvcServer.Model.Tb_Dept GetDeptById(string DepId)
+        public Tb_Dept GetDeptById(string DepId)
         {
             return dal.GetModelById(DepId);
         }
@@ -96,7 +81,7 @@ namespace AndroidMvcServer.BLL
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public List<AndroidMvcServer.Model.Tb_Dept> GetModelList(string strWhere)
+        public List<Tb_Dept> GetModelList(string strWhere)
         {
             DataSet ds = dal.GetList(strWhere);
             return DataTableToList(ds.Tables[0]);
@@ -104,13 +89,13 @@ namespace AndroidMvcServer.BLL
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public List<AndroidMvcServer.Model.Tb_Dept> DataTableToList(DataTable dt)
+        public List<Tb_Dept> DataTableToList(DataTable dt)
         {
-            List<AndroidMvcServer.Model.Tb_Dept> modelList = new List<AndroidMvcServer.Model.Tb_Dept>();
+            List<Tb_Dept> modelList = new List<Tb_Dept>();
             int rowsCount = dt.Rows.Count;
             if (rowsCount > 0)
             {
-                AndroidMvcServer.Model.Tb_Dept model;
+                Tb_Dept model;
                 for (int n = 0; n < rowsCount; n++)
                 {
                     model = dal.DataRowToModel(dt.Rows[n]);

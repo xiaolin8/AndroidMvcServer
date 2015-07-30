@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using AndroidMvcServer.Model;
 namespace AndroidMvcServer.IDAL
 {
@@ -15,23 +13,11 @@ namespace AndroidMvcServer.IDAL
         /// </summary>
         bool Exists(string UserId);
         /// <summary>
-        /// 增加一条数据
-        /// </summary>
-        bool Add(AndroidMvcServer.Model.Tb_User model);
-        /// <summary>
-        /// 更新一条数据
-        /// </summary>
-        bool Update(AndroidMvcServer.Model.Tb_User model);
-        /// <summary>
-        /// 删除一条数据
-        /// </summary>
-        bool Delete(string UserId);
-        bool DeleteList(string UserIdlist);
-        /// <summary>
         /// 得到一个对象实体
         /// </summary>
         Model.Tb_User GetModel(string UserId);
-        AndroidMvcServer.Model.Tb_User DataRowToModel(DataRow row);
+        bool Update(Tb_User model);
+        Tb_User DataRowToModel(DataRow row);
         /// <summary>
         /// 获得数据列表
         /// </summary>
@@ -45,7 +31,7 @@ namespace AndroidMvcServer.IDAL
 
         #endregion  MethodEx
 
-        Model.Tb_User GetModelByDepId(string DepId);
+        Tb_User GetModelByDepId(string DepId);
 
         DataTable GetUsersByDepId(string DepId);
     }

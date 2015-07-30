@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Drawing;
@@ -14,10 +13,10 @@ using System.Drawing.Imaging;
 namespace AndroidMvcServer.Common
 {
     #region 验证码生成类
-        /// <summary>
-        /// 验证码生成类
-        /// </summary>
-        public class ValidateCode
+    /// <summary>
+    /// 验证码生成类
+    /// </summary>
+    public class ValidateCode
         {
             #region 定义和初始化配置字段
             //用户存取验证码字符串

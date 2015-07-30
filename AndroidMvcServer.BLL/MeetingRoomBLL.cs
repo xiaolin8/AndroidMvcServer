@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Data;
-using System.Collections.Generic;
 using AndroidMvcServer.Common;
-using AndroidMvcServer.Model;
 using AndroidMvcServer.DALFactory;
 using AndroidMvcServer.IDAL;
+using AndroidMvcServer.Model;
 namespace AndroidMvcServer.BLL
 {
     /// <summary>
@@ -34,22 +33,6 @@ namespace AndroidMvcServer.BLL
         }
 
         /// <summary>
-        /// 增加一条数据
-        /// </summary>
-        public bool Add(AndroidMvcServer.Model.Tb_MeetingRoom model)
-        {
-            return dal.Add(model);
-        }
-
-        /// <summary>
-        /// 更新一条数据
-        /// </summary>
-        public bool Update(AndroidMvcServer.Model.Tb_MeetingRoom model)
-        {
-            return dal.Update(model);
-        }
-
-        /// <summary>
         /// 删除一条数据
         /// </summary>
         public bool Delete(int RoomId)
@@ -68,7 +51,7 @@ namespace AndroidMvcServer.BLL
         /// <summary>
         /// 得到一个对象实体
         /// </summary>
-        public AndroidMvcServer.Model.Tb_MeetingRoom GetModel(int RoomId)
+        public Tb_MeetingRoom GetModel(int RoomId)
         {
 
             return dal.GetModel(RoomId);
@@ -77,11 +60,11 @@ namespace AndroidMvcServer.BLL
         /// <summary>
         /// 得到一个对象实体，从缓存中
         /// </summary>
-        public AndroidMvcServer.Model.Tb_MeetingRoom GetModelByCache(int RoomId)
+        public Tb_MeetingRoom GetModelByCache(int RoomId)
         {
 
             string CacheKey = "MeetingRoomBLLModel-" + RoomId;
-            object objModel = AndroidMvcServer.Common.DataCache.GetCache(CacheKey);
+            object objModel = Common.DataCache.GetCache(CacheKey);
             if (objModel == null)
             {
                 try
@@ -89,13 +72,13 @@ namespace AndroidMvcServer.BLL
                     objModel = dal.GetModel(RoomId);
                     if (objModel != null)
                     {
-                        int ModelCache = AndroidMvcServer.Common.ConfigHelper.GetConfigInt("ModelCache");
-                        AndroidMvcServer.Common.DataCache.SetCache(CacheKey, objModel, DateTime.Now.AddMinutes(ModelCache), TimeSpan.Zero);
+                        int ModelCache = ConfigHelper.GetConfigInt("ModelCache");
+                        Common.DataCache.SetCache(CacheKey, objModel, DateTime.Now.AddMinutes(ModelCache), TimeSpan.Zero);
                     }
                 }
                 catch { }
             }
-            return (AndroidMvcServer.Model.Tb_MeetingRoom)objModel;
+            return (Tb_MeetingRoom)objModel;
         }
 
         /// <summary>

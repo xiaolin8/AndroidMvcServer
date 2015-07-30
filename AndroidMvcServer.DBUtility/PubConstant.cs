@@ -1,8 +1,7 @@
-using System;
 using System.Configuration;
 namespace AndroidMvcServer.DBUtility
 {
-    
+
     public class PubConstant
     {        
         /// <summary>

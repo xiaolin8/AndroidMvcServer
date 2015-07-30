@@ -1,6 +1,6 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Configuration;
+using AndroidMvcServer.IDAL;
 namespace AndroidMvcServer.DALFactory
 {
     /// <summary>
@@ -66,41 +66,41 @@ namespace AndroidMvcServer.DALFactory
         /// <summary>
         /// 创建tb_dept数据层接口。
         /// </summary>
-        public static AndroidMvcServer.IDAL.IDeptDAL CreateDeptDAL()
+        public static IDeptDAL CreateDeptDAL()
         {
             string ClassNamespace = AssemblyPath + ".DeptDAL";
             object objType = CreateObject(AssemblyPath, ClassNamespace);
-            return (AndroidMvcServer.IDAL.IDeptDAL)objType;
+            return (IDeptDAL)objType;
         }
 
         /// <summary>
         /// 创建tb_group数据层接口。
         /// </summary>
-        public static AndroidMvcServer.IDAL.IGroupDAL CreateGroupDAL()
+        public static IGroupDAL CreateGroupDAL()
         {
             string ClassNamespace = AssemblyPath + ".GroupDAL";
             object objType = CreateObject(AssemblyPath, ClassNamespace);
-            return (AndroidMvcServer.IDAL.IGroupDAL)objType;
+            return (IGroupDAL)objType;
         }
 
         /// <summary>
         /// 创建tb_meetingroom数据层接口。
         /// </summary>
-        public static AndroidMvcServer.IDAL.IMeetingRoomDAL CreateMeetingRoomDAL()
+        public static IMeetingRoomDAL CreateMeetingRoomDAL()
         {
             string ClassNamespace = AssemblyPath + ".MeetingRoomDAL";
             object objType = CreateObject(AssemblyPath, ClassNamespace);
-            return (AndroidMvcServer.IDAL.IMeetingRoomDAL)objType;
+            return (IMeetingRoomDAL)objType;
         }
 
         /// <summary>
         /// 创建tb_user数据层接口。
         /// </summary>
-        public static AndroidMvcServer.IDAL.IUserDAL CreateUserDAL()
+        public static IUserDAL CreateUserDAL()
         {
             string ClassNamespace = AssemblyPath + ".UserDAL";
             object objType = CreateObject(AssemblyPath, ClassNamespace);
-            return (AndroidMvcServer.IDAL.IUserDAL)objType;
+            return (IUserDAL)objType;
         }
     }
 }

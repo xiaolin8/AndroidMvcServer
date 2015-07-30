@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using MySql.Data.MySqlClient;
-using AndroidMvcServer.IDAL;
 using AndroidMvcServer.DBUtility;
-using System.Collections.Generic;
+using AndroidMvcServer.IDAL;
 using AndroidMvcServer.Model;//Please add references
+using MySql.Data.MySqlClient;
 namespace AndroidMvcServer.MySQLDAL
 {
     /// <summary>

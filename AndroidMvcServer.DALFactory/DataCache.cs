@@ -1,11 +1,10 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 namespace AndroidMvcServer.DALFactory
 {
-	/// <summary>
-	/// 缓存操作类
-	/// </summary>
-	public class DataCache
+    /// <summary>
+    /// 缓存操作类
+    /// </summary>
+    public class DataCache
 	{
 		/// <summary>
 		/// 获取当前应用程序指定CacheKey的Cache值

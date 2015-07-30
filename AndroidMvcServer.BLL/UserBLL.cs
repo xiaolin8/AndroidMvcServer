@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Data;
 using System.Collections.Generic;
+using System.Data;
+using System.Text;
 using AndroidMvcServer.Common;
-using AndroidMvcServer.Model;
 using AndroidMvcServer.DALFactory;
 using AndroidMvcServer.IDAL;
-using System.Text;
+using AndroidMvcServer.Model;
 namespace AndroidMvcServer.BLL
 {
     /// <summary>
@@ -25,30 +25,6 @@ namespace AndroidMvcServer.BLL
             return dal.Exists(UserId);
         }
 
-        /// <summary>
-        /// 增加一条数据
-        /// </summary>
-        public bool Add(AndroidMvcServer.Model.Tb_User model)
-        {
-            return dal.Add(model);
-        }
-
-        /// <summary>
-        /// 更新一条数据
-        /// </summary>
-        public bool Update(AndroidMvcServer.Model.Tb_User model)
-        {
-            return dal.Update(model);
-        }
-
-        /// <summary>
-        /// 删除一条数据
-        /// </summary>
-        public bool Delete(string UserId)
-        {
-
-            return dal.Delete(UserId);
-        }
         ///// <summary>
         ///// 删除一条数据
         ///// </summary>
@@ -68,11 +44,11 @@ namespace AndroidMvcServer.BLL
         /// <summary>
         /// 得到一个对象实体，从缓存中
         /// </summary>
-        public AndroidMvcServer.Model.Tb_User GetModelByCache(string UserId)
+        public Tb_User GetModelByCache(string UserId)
         {
 
             string CacheKey = "UserBLLModel-" + UserId;
-            object objModel = AndroidMvcServer.Common.DataCache.GetCache(CacheKey);
+            object objModel = Common.DataCache.GetCache(CacheKey);
             if (objModel == null)
             {
                 try
@@ -80,13 +56,13 @@ namespace AndroidMvcServer.BLL
                     objModel = dal.GetModel(UserId);
                     if (objModel != null)
                     {
-                        int ModelCache = AndroidMvcServer.Common.ConfigHelper.GetConfigInt("ModelCache");
-                        AndroidMvcServer.Common.DataCache.SetCache(CacheKey, objModel, DateTime.Now.AddMinutes(ModelCache), TimeSpan.Zero);
+                        int ModelCache = ConfigHelper.GetConfigInt("ModelCache");
+                        Common.DataCache.SetCache(CacheKey, objModel, DateTime.Now.AddMinutes(ModelCache), TimeSpan.Zero);
                     }
                 }
                 catch { }
             }
-            return (AndroidMvcServer.Model.Tb_User)objModel;
+            return (Tb_User)objModel;
         }
 
         /// <summary>
@@ -99,7 +75,7 @@ namespace AndroidMvcServer.BLL
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public List<AndroidMvcServer.Model.Tb_User> GetModelList(string strWhere)
+        public List<Tb_User> GetModelList(string strWhere)
         {
             DataSet ds = dal.GetList(strWhere);
             return DataTableToList(ds.Tables[0]);
@@ -107,13 +83,13 @@ namespace AndroidMvcServer.BLL
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public List<AndroidMvcServer.Model.Tb_User> DataTableToList(DataTable dt)
+        public List<Tb_User> DataTableToList(DataTable dt)
         {
-            List<AndroidMvcServer.Model.Tb_User> modelList = new List<AndroidMvcServer.Model.Tb_User>();
+            List<Tb_User> modelList = new List<Tb_User>();
             int rowsCount = dt.Rows.Count;
             if (rowsCount > 0)
             {
-                AndroidMvcServer.Model.Tb_User model;
+                Tb_User model;
                 for (int n = 0; n < rowsCount; n++)
                 {
                     model = dal.DataRowToModel(dt.Rows[n]);

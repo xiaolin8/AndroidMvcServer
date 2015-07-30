@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.Text;
-using MySql.Data.MySqlClient;
-using AndroidMvcServer.IDAL;
 using AndroidMvcServer.DBUtility;
+using AndroidMvcServer.IDAL;
+using MySql.Data.MySqlClient;
 namespace AndroidMvcServer.MySQLDAL
 {
     /// <summary>

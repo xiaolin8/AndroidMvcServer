@@ -69,10 +69,6 @@
       <Project>{38044c21-1fd9-4c3c-84b2-cf6788a28432}</Project>
       <Name>AndroidMvcServer.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AndroidMvcServer.MySQLDAL\AndroidMvcServer.MySQLDAL.csproj">
-      <Project>{c3ad3d51-834a-4e21-852a-9128188ab073}</Project>
-      <Name>AndroidMvcServer.MySQLDAL</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
