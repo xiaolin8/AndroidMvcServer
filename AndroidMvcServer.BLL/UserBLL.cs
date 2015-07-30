@@ -184,7 +184,7 @@ namespace AndroidMvcServer.BLL
         }
 
         //根据DepId获取所有用户数据
-        public List<Tb_User> GetUsersByDepId(string DepId)
+        public DataTable GetUsersByDepId(string DepId)
         {
             return dal.GetUsersByDepId(DepId);
         }

@@ -394,26 +394,72 @@ namespace AndroidMvcServer.MySQLDAL
         /// </summary>
         /// <param name="DepId"></param>
         /// <returns></returns>
-        public List<Tb_User> GetUsersByDepId(string depId)
+        public DataTable GetUsersByDepId(string depId)
         {
-            string strSql = "SELECT tb_user.*,tb_dept.ParDepId FROM tb_user,tb_dept WHERE tb_user.DeptId=tb_dept.DepId&&tb_user.DeptId='" + depId + "'";
-            MySqlDataReader reader = DbHelperMySQL.ExecuteReader(strSql);
-            while (reader.Read())
+            //1.根据部门ID获取是否是叶子节点部门
+            string strSql = "SELECT IsLeaf FROM tb_dept WHERE DepId = '" + depId + "'";
+            List<Tb_User> listUser = new List<Tb_User>();
+            List<string> subDepIds = new List<string>();//存储所有的子节点部门ID
+            subDepIds.Add(depId);//添加所点击的根节点
+            int IsLeaf = (SByte)DbHelperMySQL.GetSingle(strSql);
+            if (IsLeaf != 1)
             {
-                string DepId = reader["DepId"].ToString();
-                string ParDepId = reader["ParDepId"].ToString();
-                while (ParDepId != "JURASSIC")
+                string sql1 = "SELECT DepId,IsLeaf FROM tb_dept WHERE ParDepId = '" + depId + "'";
+                using (MySqlDataReader reader1 = DbHelperMySQL.ExecuteReader(sql1))
                 {
-                    string sql1 = "SELECT tb_user.*,tb_dept.ParDepId FROM tb_user,tb_dept WHERE tb_user.DeptId=tb_dept.DepId&&tb_user.DeptId='" + ParDepId + "'";
-                    MySqlDataReader sdr1 = DbHelperMySQL.ExecuteReader(sql1);
-                    while (sdr1.Read())
+                    while (reader1.Read())
                     {
-                        string DepId1 = reader["DepId"].ToString();
-                        ParDepId = reader["ParDepId"].ToString();
+                        string depId1 = reader1[0].ToString();
+                        int isLeaf1 = (SByte)reader1[1];
+                        subDepIds.Add(depId1);//添加所点击的根节点的第一层叶子
+                        if (isLeaf1 != 1)
+                        {
+                            string sql2 = "SELECT DepId,IsLeaf FROM tb_dept WHERE ParDepId = '" + depId1 + "'";
+                            using (MySqlDataReader reader2 = DbHelperMySQL.ExecuteReader(sql2))
+                            {
+                                while (reader2.Read())
+                                {
+                                    string depId2 = reader2[0].ToString();
+                                    int isLeaf2 = (SByte)reader2[1];
+                                    subDepIds.Add(depId2);//添加所点击的根节点的第二层叶子
+                                    if (isLeaf2 != 1)
+                                    {
+                                        string sql3 = "SELECT DepId,IsLeaf FROM tb_dept WHERE ParDepId = '" + depId2 + "'";
+                                        using (MySqlDataReader reader3 = DbHelperMySQL.ExecuteReader(sql3))
+                                        {
+                                            while (reader3.Read())
+                                            {
+                                                string depId3 = reader3[0].ToString();
+                                                int isLeaf3 = (SByte)reader3[1];
+                                                subDepIds.Add(depId2);//添加所点击的根节点的第三层叶子
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
-            throw new NotImplementedException();
+            //根据获取到的所有部门ID获取职员消息
+            StringBuilder strDepts = new StringBuilder("'");
+            foreach (string s in subDepIds)
+            {
+                strDepts.Append(s + "','");
+            }
+            strDepts.Remove(strDepts.Length - 3, 2);
+            StringBuilder sb = new StringBuilder();
+            sb.Append("SELECT * FROM tb_user WHERE DeptId IN (" + strDepts.ToString() + ")");
+            DataSet DSet = DbHelperMySQL.Query(sb.ToString());
+            if (DSet != null)
+            {
+                if (DSet.Tables[0] != null)
+                {
+                    return DSet.Tables[0];
+                }
+                return null;
+            }
+            return null;
         }
     }
 }

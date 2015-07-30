@@ -47,6 +47,6 @@ namespace AndroidMvcServer.IDAL
 
         Model.Tb_User GetModelByDepId(string DepId);
 
-        List<Tb_User> GetUsersByDepId(string DepId);
+        DataTable GetUsersByDepId(string DepId);
     }
 }

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using AndroidMvcServer.BLL;
+using AndroidMvcServer.Model;
 using AndroidMvcServer.Portal.Models;
-using MySql.Data.MySqlClient;
 
 namespace AndroidMvcServer.Controllers
 {
@@ -62,35 +59,31 @@ namespace AndroidMvcServer.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public JsonResult GetUsersByDepId(string DepId)
         {
-            DataTable DTable = bll.GetUsersByDepId(DepId);
-            if (DTable != null)
+            DataTable dt = bll.GetUsersByDepId(DepId);
+            List<UserModel> listModel = new List<UserModel>();
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
-                List<UserModel> litestModel = new List<UserModel>();
-                for (int i = 0; i < DTable.Rows.Count; i++)
+                DataRowView rowview = dt.DefaultView[i];
+                listModel.Add(new UserModel()
                 {
-                    DataRowView rowview = DTable.DefaultView[i];
-                    litestModel.Add(new UserModel()
-                    {
-                        UserName = rowview["UserName"].ToString(),
-                        EnglishName = rowview["EnglishName"].ToString(),
-                        UserId = rowview["UserId"].ToString(),
-                        Status = Convert.ToInt32(rowview["Status"].ToString()),
-                        Gender = rowview["Gender"].ToString() == "1" ? true : false,
-                        Signature = rowview["Signature"].ToString(),
-                        HeadPic = Convert.ToInt32(rowview["HeadPic"].ToString()),
-                        CellPhone = rowview["CellPhone"].ToString(),
-                        OfficePhone = rowview["OfficePhone"].ToString(),
-                        Email = rowview["Email"].ToString(),
-                        DeptId = rowview["DeptId"].ToString(),
-                        Position = rowview["Position"].ToString(),
-                        DisplayIndex = Convert.ToInt32(rowview["DisplayIndex"].ToString()),
-                        active = true,
-                        Comment = rowview["Comment"].ToString()
-                    });
-                }
-                return Json(litestModel, JsonRequestBehavior.AllowGet);
+                    UserName = rowview["UserName"].ToString(),
+                    UserId = rowview["UserId"].ToString(),
+                    EnglishName = rowview["EnglishName"].ToString(),
+                    Signature = rowview["Signature"].ToString(),
+                    Status = Convert.ToInt32(rowview["Status"].ToString()),
+                    Gender = rowview["Gender"].ToString() == String.Empty ? false : true,
+                    CellPhone = rowview["CellPhone"].ToString(),
+                    OfficePhone = rowview["OfficePhone"].ToString(),
+                    Email = rowview["Email"].ToString(),
+                    DeptId = rowview["DeptId"].ToString(),
+                    Position = rowview["Position"].ToString(),
+                    HeadPic = Convert.ToInt32(rowview["HeadPic"].ToString()),
+                    DisplayIndex = Convert.ToInt32(rowview["DisplayIndex"].ToString()),
+                    active = true,
+                    Comment = rowview["Comment"].ToString()
+                });
             }
-            return null;
+            return Json(listModel, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
