@@ -4,6 +4,7 @@ using System.Data;
 using System.Text;
 using System.Web.Mvc;
 using AndroidMvcServer.BLL;
+using AndroidMvcServer.Model;
 using AndroidMvcServer.Portal.Models;
 
 namespace AndroidMvcServer.Portal.Controllers
@@ -17,9 +18,6 @@ namespace AndroidMvcServer.Portal.Controllers
 
         public ActionResult Index()
         {
-            //string strJson = getGroupDetailById("142638234269572");
-            //GroupDetailModel1 m = fastJSON.JSON.ToObject<GroupDetailModel1>(strJson); //反序列化
-            //string owner = m.data[0].description;
             return View();
         }
 
@@ -50,41 +48,6 @@ namespace AndroidMvcServer.Portal.Controllers
             builder.Append("]");
             return builder.ToString();
         }
-
-        //[AcceptVerbs(HttpVerbs.Get)]
-        //public JsonResult GetUsersByDepId(string DepId)
-        //{
-        //    UserBLL bll = new UserBLL();
-        //    DataTable DTable = bll.getUsersByDepId(DepId);
-        //    if (DTable != null)
-        //    {
-        //        List<UserModel> litestModel = new List<UserModel>();
-        //        for (int i = 0; i < DTable.Rows.Count; i++)
-        //        {
-        //            DataRowView rowview = DTable.DefaultView[i];
-        //            litestModel.Add(new UserModel()
-        //            {
-        //                UserName = rowview["UserName"].ToString(),
-        //                EnglishName = rowview["EnglishName"].ToString(),
-        //                UserId = rowview["UserId"].ToString(),
-        //                Status = Convert.ToInt32(rowview["Status"].ToString()),
-        //                Gender = Convert.ToBoolean(rowview["Gender"].ToString()),
-        //                Signature = rowview["Signature"].ToString(),
-        //                HeadPic = Convert.ToInt32(rowview["HeadPic"].ToString()),
-        //                CellPhone = rowview["CellPhone"].ToString(),
-        //                OfficePhone = rowview["OfficePhone"].ToString(),
-        //                Email = rowview["Email"].ToString(),
-        //                DeptId = rowview["DeptId"].ToString(),
-        //                Position = rowview["Position"].ToString(),
-        //                DisplayIndex = Convert.ToInt32(rowview["DisplayIndex"].ToString()),
-        //                active = true,
-        //                Comment = rowview["Comment"].ToString()
-        //            });
-        //        }
-        //        return Json(litestModel, JsonRequestBehavior.AllowGet);
-        //    }
-        //    return null;
-        //}
 
         /// <summary>
         /// 从服务器获取所有群组的基本信息，并更新本地数据库
@@ -120,44 +83,44 @@ namespace AndroidMvcServer.Portal.Controllers
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        //[AcceptVerbs(HttpVerbs.Get)]
-        //public JsonResult getAllGroupsByDepID(string depId)
-        //{
-        //    SimpleGroupsModel2[] list = getAllGroups();
-        //    List<SimpleGroupsModel2> myData = new List<SimpleGroupsModel2>();
-        //    foreach (SimpleGroupsModel2 model in list)
-        //    {
-        //        string groupId = model.groupid;
-        //        string groupName = model.groupname;
-        //        int currentUsers = model.affiliations;
-        //        string groupOwner = model.owner.Substring(model.owner.LastIndexOf('_') + 1);//这个一般不会被修改的
-        //        //1.根据groupOwner获取姓名、所在部门
-        //        Tb_User user = userBll.GetModel(groupOwner);
-        //        model.owner = user.UserName;
-        //        model.leaf = true;
-        //        if (user.DeptId.Substring(0, 2) == depId)//如果部门是北京、武汉、西安
-        //        {
-        //            //如果数据库中有此条信息，而服务器不存在此条信息，那么删除该条记录
-        //            //如果数据库中存在此条信息，那么更新数据库
-        //            string sqlString = "UPDATE Tb_Group SET groupName = '" + groupName + "',currentUsers=" + currentUsers + " WHERE groupId = '" + groupId + "'";
-        //            int result = sqlHelper.RunSQL(sqlString);//result代表受影响的行数
-        //            if (result == 0)//说明是数据库中不存在此条信息，那么执行插入数据库操作
-        //            {
-        //                string insertSql = "INSERT INTO Tb_Group(groupId,groupName,groupDesc,groupOwner,groupIcon,members,allowInvite,maxUsers,isPublic)VALUES('" + groupId + "', N'" + groupName + "',N'','" + groupOwner + "',0,'" + currentUsers + "',NULL,80,NULL)";
-        //                sqlHelper.RunSQL(sqlString);//result代表受影响的行数
-        //            }
-        //            myData.Add(model);
-        //        }
-        //        else if (user.DeptId.Substring(0, 4) == depId)
-        //        {
-        //            string sqlString = "UPDATE Tb_Group SET groupName = '" + groupName + "',currentUsers=" + currentUsers + " WHERE groupId = '" + groupId + "'";
-        //            sqlHelper.RunSQL(sqlString);
-        //            myData.Add(model);
-        //        }
-        //    }
-        //    //返回json字符串
-        //    return Json(myData, JsonRequestBehavior.AllowGet);
-        //}
+        [AcceptVerbs(HttpVerbs.Get)]
+        public JsonResult getAllGroupsByDepID(string depId)
+        {
+            SimpleGroupsModel2[] list = getAllGroups();
+            List<SimpleGroupsModel2> myData = new List<SimpleGroupsModel2>();
+            foreach (SimpleGroupsModel2 model in list)
+            {
+                string groupId = model.groupid;
+                string groupName = model.groupname;
+                int currentUsers = model.affiliations;
+                string groupOwner = model.owner.Substring(model.owner.LastIndexOf('_') + 1);//这个一般不会被修改的
+                //1.根据groupOwner获取姓名、所在部门
+                Tb_User user = userBll.GetModel(groupOwner);
+                model.owner = user.UserName;
+                model.leaf = true;
+                //if (user.DeptId.Substring(0, 2) == depId)//如果部门是北京、武汉、西安
+                //{
+                //    //如果数据库中有此条信息，而服务器不存在此条信息，那么删除该条记录
+                //    //如果数据库中存在此条信息，那么更新数据库
+                //    string sqlString = "UPDATE Tb_Group SET groupName = '" + groupName + "',currentUsers=" + currentUsers + " WHERE groupId = '" + groupId + "'";
+                //    int result = sqlHelper.RunSQL(sqlString);//result代表受影响的行数
+                //    if (result == 0)//说明是数据库中不存在此条信息，那么执行插入数据库操作
+                //    {
+                //        string insertSql = "INSERT INTO Tb_Group(groupId,groupName,groupDesc,groupOwner,groupIcon,members,allowInvite,maxUsers,isPublic)VALUES('" + groupId + "', N'" + groupName + "',N'','" + groupOwner + "',0,'" + currentUsers + "',NULL,80,NULL)";
+                //        sqlHelper.RunSQL(sqlString);//result代表受影响的行数
+                //    }
+                //    myData.Add(model);
+                //}
+                //else if (user.DeptId.Substring(0, 4) == depId)
+                //{
+                //    string sqlString = "UPDATE Tb_Group SET groupName = '" + groupName + "',currentUsers=" + currentUsers + " WHERE groupId = '" + groupId + "'";
+                //    sqlHelper.RunSQL(sqlString);
+                //    myData.Add(model);
+                //}
+            }
+            //返回json字符串
+            return Json(myData, JsonRequestBehavior.AllowGet);
+        }
 
         [AcceptVerbs(HttpVerbs.Get)]
         public JsonResult getAllMembersByGroupId(string groupId)
