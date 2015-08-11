@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{880ED773-B0A6-4B95-A405-8F9B362A56ED}"
 EndProject
@@ -32,6 +32,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidMvcServer.WebAPI", "AndroidMvcServer.WebAPI\AndroidMvcServer.WebAPI.csproj", "{70864332-778B-4448-8441-9E5B98E438E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidMvcServer.WebAPI.Tests", "AndroidMvcServer.WebAPI.Tests\AndroidMvcServer.WebAPI.Tests.csproj", "{C3F49EE6-A2AE-4659-BB39-93FE70F078CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet.Utilities", "DotNet.Utilities\DotNet.Utilities.csproj", "{4771F187-E577-458C-91FD-97BB65AF7221}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{C3F49EE6-A2AE-4659-BB39-93FE70F078CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3F49EE6-A2AE-4659-BB39-93FE70F078CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3F49EE6-A2AE-4659-BB39-93FE70F078CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4771F187-E577-458C-91FD-97BB65AF7221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4771F187-E577-458C-91FD-97BB65AF7221}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4771F187-E577-458C-91FD-97BB65AF7221}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4771F187-E577-458C-91FD-97BB65AF7221}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,6 +106,7 @@ Global
 		{C3AD3D51-834A-4E21-852A-9128188AB073} = {3CACE502-288C-4A3A-85FA-C9A459A7780B}
 		{319D08FC-C28B-40D6-B56B-369229A9E849} = {3CACE502-288C-4A3A-85FA-C9A459A7780B}
 		{85B89D44-3B72-471C-B5C4-FC3691EE6B56} = {3CACE502-288C-4A3A-85FA-C9A459A7780B}
+		{4771F187-E577-458C-91FD-97BB65AF7221} = {88FB7670-03BF-41A5-8245-78B7DCCAD852}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .
